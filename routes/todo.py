@@ -1,15 +1,30 @@
-from flask import Blueprint, render_template
+from flask import render_template, redirect, Blueprint
 from flask import request
 from classes.todo_item import todo_manager
+import re
 
-todo_bp = Blueprint('index',__name__)
+todo_bp = Blueprint('todo', __name__)
 
-@todo_bp.route('/', methods=['GET','POST'])
+@todo_bp.route('/', methods=['GET', 'POST'])
 def todo(task=None):
     if request.method == 'GET':
-        t = todo_manager()
-        print(t.get_all())
-        return render_template('index.html')
-    # if request.method == 'POST':
-    #     t.create
+        tasks = todo_manager().get_all()
+        if len(tasks) == 0:
+            todo_manager.truncate()
+        return render_template('index.html', tasks=tasks)
+    if request.method == 'POST':
+        if (item := request.form.get('task')):
+            todo_manager.create(item)
+
+        if (item := request.form.get('task_complete')):
+            index = re.findall(r'\d+', item)
+            todo_manager.complete(int(index[0]))
+            print(request.form.get('task_item'))
+
+        if (item := request.form.get('task_delete')):
+            index = re.findall(r'\d+', item)
+            todo_manager.delete(int(index[0]))
+            print(request.form.get('task_item'))
+        return redirect("/")
    
+

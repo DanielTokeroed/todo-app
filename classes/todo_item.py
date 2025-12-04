@@ -1,45 +1,42 @@
 import pyodbc
+from models import db
+from sqlalchemy import select, insert, delete, update, text
+from models.tasks import Task
 
-task_dict = {}
 
 class todo_manager:
 
     @staticmethod
-    def complete(id):
-        with pyodbc.connect('DSN=tododb') as conn:
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM tasks WHERE id = ?", id)
-            conn.commit()
+    def complete(id: int):
+        db.session.execute(update(Task).where(Task.id == id).values(status = True)) # type: ignore
+        db.session.commit() # type: ignore
 
     @staticmethod
-    def create(task: str):
-        with pyodbc.connect('DSN=tododb') as conn:
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO tasks (task) VALUES (?)', (task,))
-            conn.commit()
+    def create(task: str|None):
+       db.session.execute(insert(Task).values(task = task))
+       db.session.commit() # type: ignore
+    
+    @staticmethod
+    def delete(id: int):
+        db.session.execute(delete(Task).where(Task.id == id)) # type: ignore
+        db.session.commit() # type: ignore
 
     @staticmethod
     def delete_all():
-        with pyodbc.connect('DSN=tododb') as conn:
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM tasks")
-            conn.commit()
+        db.session.execute(delete(Task))
+        db.session.commit() # type: ignore
+    
+    @staticmethod
+    def truncate():
+        response = db.session.execute(text('truncate table pagination.tasks'))
+        return response
 
 
     @staticmethod
     def get_all():
-        with pyodbc.connect('DSN=tododb') as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM tasks t")
-            rows = cursor.fetchall()
-
-            for row in rows:
-                task_item = {
-                'id': row.id,
-                'task': row.task
-                }
-                task_dict.append(task_item)
-            return task_dict
+        response = db.session.execute(select(Task)).scalars().all()
+        return response
+    
 
 
 
