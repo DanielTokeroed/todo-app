@@ -4,3 +4,5 @@ package-lock.json
 .cpython
 *.pyc
 .gitignore
+package.json
+package-lock.json

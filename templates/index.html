@@ -5,19 +5,15 @@
 </head>
 <body>
    {%include '/partials/navbar.html'%}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row align-items-start">
-            <div class="col"> 
-            </div>
-            <div class="col ">
-                <div class="p-5 border-3 border-opacity-25 border-dark rounded vh-20 border">
-                      <form action="/" method="POST">
+            <div class="col-2 ">
+                <form action="/" method="POST">
                     <input id='task' type="text" name='task' placeholder="write new task">
                     <button type="submit" class="btn btn-primary">ADD</button>
                 </form>
-                </div>
             </div>
-           <div class="col p-5">
+           <div class="col-3">
                 {% for i in tasks %}
                     <div class="row border border-black rounded-2  justify-content-start mb-2 p-2">
                         <form action="/" method="POST" class="d-flex align-items-center">
