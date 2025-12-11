@@ -5,7 +5,7 @@ import re
 
 todo_bp = Blueprint('todo', __name__)
 
-@todo_bp.route('/', methods=['GET', 'POST'])
+@todo_bp.route('/todo', methods=['GET', 'POST'])
 def todo(task=None):
     if request.method == 'GET':
         tasks = todo_manager().get_all()
@@ -25,6 +25,6 @@ def todo(task=None):
             index = re.findall(r'\d+', item)
             todo_manager.delete(int(index[0]))
             print(request.form.get('task_item'))
-        return redirect("/")
+        return redirect("/todo")
    
 

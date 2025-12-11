@@ -8,15 +8,15 @@
     <div class="container-fluid">
         <div class="row align-items-start">
             <div class="col-2 ">
-                <form action="/" method="POST">
+                <form action="/todo" method="POST">
                     <input id='task' type="text" name='task' placeholder="write new task">
                     <button type="submit" class="btn btn-primary">ADD</button>
                 </form>
             </div>
            <div class="col-3">
                 {% for i in tasks %}
-                    <div class="row border border-black rounded-2  justify-content-start mb-2 p-2">
-                        <form action="/" method="POST" class="d-flex align-items-center">
+                    <div class="row border border-dark rounded-2  justify-content-start mb-2 p-2">
+                        <form action="/todo" method="POST" class="d-flex align-items-center">
                             <!-- Hidden input to send the task info -->
                             {% if i.status == 1%}
                                 <input type="hidden" name="task_delete" value="{{ i }}">
