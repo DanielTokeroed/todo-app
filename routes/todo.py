@@ -26,5 +26,3 @@ def todo(task=None):
             todo_manager.delete(int(index[0]))
             print(request.form.get('task_item'))
         return redirect("/todo")
-   
-
